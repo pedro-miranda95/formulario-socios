@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proposta de Socio - Centro Social e Cultural do Povo de A-Dos-Potes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="estilo.css" />
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <img src="logo_oficial.png" alt="Brasao do Centro Social e Cultural do Povo de A-Dos-Potes" />
+    <h1>Centro Social e Cultural<br>do Povo de A-Dos-Potes</h1>
+    <p>Proposta de inscricao como socio(a)</p>
+  </div>
+
+  <div class="stripe"><div></div><div></div><div></div></div>
+
+  <div class="card">
+    <div class="section-label">Dados pessoais</div>
+    <div class="field-grid">
+      <div class="field span-2">
+        <label>Nome completo <span class="req">*</span></label>
+        <input type="text" id="nome" placeholder="Nome e apelido completos" />
+      </div>
+      <div class="field">
+        <label>NIF <span class="req">*</span></label>
+        <input type="text" id="nif" placeholder="000 000 000" maxlength="9" />
+      </div>
+      <div class="field">
+        <label>Data de nascimento <span class="req">*</span></label>
+        <input type="date" id="dob" />
+      </div>
+      <div class="field span-2">
+        <label>Morada <span class="req">*</span></label>
+        <input type="text" id="morada" placeholder="Rua, numero, andar..." />
+      </div>
+    </div>
+    <div class="field-grid cols-13" style="margin-top:14px;">
+      <div class="field">
+        <label>Codigo postal <span class="req">*</span></label>
+        <div class="cp-wrapper">
+          <input type="text" id="cp" placeholder="0000-000" maxlength="8"
+                 autocomplete="postal-code" oninput="formatarCP(this)" />
+          <div class="cp-spinner" id="cpSpinner"></div>
+        </div>
+        <span class="field-hint" id="cpHint"></span>
+      </div>
+      <div class="field">
+        <label>Localidade <span class="req">*</span></label>
+        <input type="text" id="localidade" placeholder="Preenchido automaticamente" />
+      </div>
+    </div>
+    <div class="field-grid cols-2" style="margin-top:14px;">
+      <div class="field">
+        <label>Telefone</label>
+        <input type="tel" id="telefone" placeholder="+351 210 000 000" />
+      </div>
+      <div class="field">
+        <label>Telemovel <span class="req">*</span></label>
+        <input type="tel" id="telemovel" placeholder="+351 910 000 000" />
+      </div>
+    </div>
+    <div class="field-grid" style="margin-top:14px;">
+      <div class="field">
+        <label>Email <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="nome@exemplo.com" />
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">Declaracao do proponente</div>
+    <div class="declaracao-box">
+      <p>Declaro, por minha honra, que desejo tornar-me socio(a) do
+        <strong>Centro Social e Cultural do Povo de A-Dos-Potes</strong>,
+        comprometendo-me a:</p>
+      <ol>
+        <li>Respeitar os estatutos, regulamentos e decisoes dos orgaos sociais da associacao;</li>
+        <li>Cumprir os deveres de socio, incluindo o pagamento das quotas, de acordo com os termos definidos;</li>
+        <li>Promover os valores e os objetivos da associacao, contribuindo para o seu bom funcionamento.</li>
+      </ol>
+    </div>
+    <div class="quota-row">
+      <label>Quota mensal: <span class="req" style="color:var(--red);">*</span></label>
+      <div class="quota-col">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <input type="number" id="quota" min="1" step="1" placeholder="1" oninput="validarQuota(this)" />
+          <span class="euro">euros</span>
+          <span class="hint">minimo 1 euro/mes</span>
+        </div>
+        <span class="quota-error" id="quotaErro">O valor minimo e de 1 euro por mes.</span>
+      </div>
+    </div>
+    <div class="consent-row" style="margin-top:1.5rem;">
+      <input type="checkbox" id="rgpd" />
+      <label for="rgpd">Autorizo o tratamento dos meus dados pessoais para os fins associados a gestao da relacao de socio, de acordo com o RGPD. <span class="req">*</span></label>
+    </div>
+    <div class="consent-row">
+      <input type="checkbox" id="declaro" />
+      <label for="declaro">Confirmo que li e aceito os compromissos acima descritos, submetendo esta proposta de inscricao como socio(a). <span class="req">*</span></label>
+    </div>
+  </div>
+
+  <button class="btn-submit" id="btnSubmit" onclick="submeter()">Submeter proposta</button>
+
+  <div class="alerta" id="alertaBox">
+    <h3 id="alertaTitulo"></h3>
+    <p id="alertaMsg"></p>
+  </div>
+
+  <div class="footer">
+    Centro Social e Cultural do Povo de A-Dos-Potes &nbsp;·&nbsp; Proposta de Socio
+  </div>
+
+</div>
+<script src="formulario.js"></script>
+</body>
+</html>
