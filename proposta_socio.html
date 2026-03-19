@@ -27,11 +27,14 @@
       </div>
       <div class="field">
         <label>NIF <span class="req">*</span></label>
-        <input type="text" id="nif" placeholder="000 000 000" maxlength="9" />
+        <input type="text" id="nif" placeholder="000000000" maxlength="9"
+               oninput="validarNIF(this)" />
+        <span class="field-erro" id="nifErro"></span>
       </div>
       <div class="field">
         <label>Data de nascimento <span class="req">*</span></label>
-        <input type="date" id="dob" />
+        <input type="date" id="dob" onchange="validarData(this)" />
+        <span class="field-erro" id="dobErro"></span>
       </div>
       <div class="field span-2">
         <label>Morada <span class="req">*</span></label>
@@ -56,17 +59,37 @@
     <div class="field-grid cols-2" style="margin-top:14px;">
       <div class="field">
         <label>Telefone</label>
-        <input type="tel" id="telefone" placeholder="+351 210 000 000" />
+        <div class="phone-wrapper">
+          <div class="phone-prefix" onclick="abrirDropdown('telefoneDropdown', event)">
+            <span class="flag" id="telefoneBandeira">🇵🇹</span>
+            <span class="prefix-code" id="telefonePrefixo">+351</span>
+            <span class="prefix-arrow">▾</span>
+          </div>
+          <input type="tel" id="telefone" placeholder="210 000 000" />
+          <div class="prefix-dropdown" id="telefoneDropdown"></div>
+        </div>
       </div>
       <div class="field">
         <label>Telemovel <span class="req">*</span></label>
-        <input type="tel" id="telemovel" placeholder="+351 910 000 000" />
+        <div class="phone-wrapper">
+          <div class="phone-prefix" onclick="abrirDropdown('telemovelDropdown', event)">
+            <span class="flag" id="telemovelBandeira">🇵🇹</span>
+            <span class="prefix-code" id="telemovelPrefixo">+351</span>
+            <span class="prefix-arrow">▾</span>
+          </div>
+          <input type="tel" id="telemovel" placeholder="910 000 000"
+                 oninput="validarTelemovel(this)" />
+          <div class="prefix-dropdown" id="telemovelDropdown"></div>
+        </div>
+        <span class="field-erro" id="telemovelErro"></span>
       </div>
     </div>
     <div class="field-grid" style="margin-top:14px;">
       <div class="field">
         <label>Email <span class="req">*</span></label>
-        <input type="email" id="email" placeholder="nome@exemplo.com" />
+        <input type="email" id="email" placeholder="nome@exemplo.com"
+               oninput="validarEmail(this)" />
+        <span class="field-erro" id="emailErro"></span>
       </div>
     </div>
   </div>
@@ -87,11 +110,12 @@
       <label>Quota mensal: <span class="req" style="color:var(--red);">*</span></label>
       <div class="quota-col">
         <div style="display:flex; align-items:center; gap:8px;">
-          <input type="number" id="quota" min="1" step="1" placeholder="1" oninput="validarQuota(this)" />
+          <input type="number" id="quota" min="1" step="1" value="1"
+                 oninput="validarQuota(this)" />
           <span class="euro">euros</span>
           <span class="hint">minimo 1 euro/mes</span>
         </div>
-        <span class="quota-error" id="quotaErro">O valor minimo e de 1 euro por mes.</span>
+        <span class="field-erro" id="quotaErro"></span>
       </div>
     </div>
     <div class="consent-row" style="margin-top:1.5rem;">
@@ -106,9 +130,22 @@
 
   <button class="btn-submit" id="btnSubmit" onclick="submeter()">Submeter proposta</button>
 
-  <div class="alerta" id="alertaBox">
-    <h3 id="alertaTitulo"></h3>
-    <p id="alertaMsg"></p>
+  <!-- Loading overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-box">
+      <div class="loading-spinner"></div>
+      <p>A enviar proposta...</p>
+    </div>
+  </div>
+
+  <!-- Modal popup -->
+  <div class="modal-overlay" id="modalOverlay" onclick="fecharModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-icon" id="modalIcone"></div>
+      <h3 id="modalTitulo"></h3>
+      <p id="modalMsg"></p>
+      <button class="modal-btn" id="modalBtn" onclick="fecharModal()">OK</button>
+    </div>
   </div>
 
   <div class="footer">
