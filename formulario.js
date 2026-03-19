@@ -416,7 +416,7 @@ function validarQuota(input) {
 /* ────────────────────────────────────────────
    Mostrar alerta de resultado
 ──────────────────────────────────────────── */
-function mostrarAlerta(tipo, titulo, msg) {
+function mostrarAlerta(tipo, titulo, msg, reset) {
   var overlay = document.getElementById('modalOverlay');
   var icone   = document.getElementById('modalIcone');
   var btn     = document.getElementById('modalBtn');
@@ -428,11 +428,60 @@ function mostrarAlerta(tipo, titulo, msg) {
   document.getElementById('modalTitulo').textContent = titulo;
   document.getElementById('modalMsg').textContent    = msg;
 
+  // Se sucesso, ao fechar o modal reset o formulario
+  btn.onclick = function () {
+    fecharModal();
+    if (reset) resetFormulario();
+  };
+
   overlay.classList.add('open');
 }
 
 function fecharModal() {
   document.getElementById('modalOverlay').classList.remove('open');
+}
+
+function resetFormulario() {
+  // Limpar todos os campos de texto
+  var campos = ['nome', 'nif', 'dob', 'morada', 'cp', 'localidade', 'telefone', 'telemovel', 'email'];
+  campos.forEach(function (id) {
+    var el = document.getElementById(id);
+    el.value = '';
+    el.classList.remove('error', 'success-field', 'locked');
+    el.readOnly = false;
+  });
+
+  // Quota volta ao minimo
+  document.getElementById('quota').value = '1';
+  document.getElementById('quota').classList.remove('error');
+
+  // Limpar erros inline
+  var erros = document.querySelectorAll('.field-erro');
+  erros.forEach(function (e) { e.style.display = 'none'; e.textContent = ''; });
+
+  // Limpar hint do codigo postal
+  document.getElementById('cpHint').textContent = '';
+
+  // Desmarcar checkboxes
+  document.getElementById('rgpd').checked   = false;
+  document.getElementById('declaro').checked = false;
+
+  // Repor prefixos para Portugal
+  prefixoSelecionado.telefone  = { flag: '🇵🇹', codigo: '+351' };
+  prefixoSelecionado.telemovel = { flag: '🇵🇹', codigo: '+351' };
+  document.getElementById('telefoneBandeira').textContent  = '🇵🇹';
+  document.getElementById('telefonePrefixo').textContent   = '+351';
+  document.getElementById('telemovelBandeira').textContent = '🇵🇹';
+  document.getElementById('telemovelPrefixo').textContent  = '+351';
+
+  // Mostrar o botao novamente
+  var btn = document.getElementById('btnSubmit');
+  btn.style.display = 'block';
+  btn.disabled      = false;
+  btn.textContent   = 'Submeter proposta';
+
+  // Scroll para o topo
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function mostrarLoading() {
@@ -531,9 +580,8 @@ function submeter() {
     .then(function (json) {
       esconderLoading();
       if (json.status === 'ok') {
-        btn.style.display = 'none';
         mostrarAlerta('sucesso', 'Proposta submetida com sucesso!',
-          'A sua proposta sera analisada e aprovada pela Direcao. Entraremos em contacto brevemente.');
+          'A sua proposta sera analisada e aprovada pela Direcao. Entraremos em contacto brevemente.', true);
       } else {
         btn.disabled    = false;
         btn.textContent = 'Submeter proposta';
